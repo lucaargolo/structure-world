@@ -1,0 +1,44 @@
+package io.github.lucaargolo.structureworld;
+
+import io.github.lucaargolo.structureworld.Mod;
+import io.github.lucaargolo.structureworld.StructureChunkGenerator;
+import io.github.lucaargolo.structureworld.mixin.GeneratorTypeAccessor;
+import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.world.GeneratorType;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.world.biome.BuiltinBiomes;
+import net.minecraft.world.biome.source.FixedBiomeSource;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+
+public class ModClient implements ClientModInitializer {
+
+    public static GeneratorType OVERRIDED_GENERATOR_TYPE = null;
+
+    @Override
+    public void onInitializeClient() {
+
+        Mod.CONFIG.getStructureWorldConfigs().forEach(structureWorldConfig -> {
+            Identifier structureIdentifier = new Identifier(structureWorldConfig.getStructureIdentifier());
+            GeneratorType generatorType = new GeneratorType(structureIdentifier.getPath()) {
+                protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
+                    return new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(BiomeKeys.FOREST)), structureIdentifier, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
+                }
+            };
+
+            if(structureWorldConfig.isOverridingDefault()) {
+                GeneratorTypeAccessor.getValues().add(0, generatorType);
+                OVERRIDED_GENERATOR_TYPE = generatorType;
+                Mod.LOGGER.info("Successfully registered "+structureIdentifier+" generator type. (Overriding default)");
+            }else{
+                GeneratorTypeAccessor.getValues().add(generatorType);
+                Mod.LOGGER.info("Successfully registered "+structureIdentifier+" generator type.");
+            }
+
+        });
+
+    }
+}

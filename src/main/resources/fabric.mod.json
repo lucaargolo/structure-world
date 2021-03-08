@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "structureworld",
+  "version": "${version}",
+  "name": "Structure World",
+  "description": "A small mod that lets you generate a void world with a custom structure placed on it.",
+  "authors": [
+    "D4rkness_King"
+  ],
+  "contact": {},
+  "license": "MPL-2.0",
+  "icon": "assets/structureworld/icon.png",
+  "environment": "*",
+  "accessWidener": "structureworld.accesswidener",
+  "entrypoints": {
+    "main": [
+      "io.github.lucaargolo.structureworld.Mod"
+    ],
+    "client": [
+      "io.github.lucaargolo.structureworld.ModClient"
+    ],
+    "server": [
+      "io.github.lucaargolo.structureworld.ModServer"
+    ]
+  },
+  "mixins": [
+    "structureworld.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.2",
+    "minecraft": "1.16.5"
+  }
+}

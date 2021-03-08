@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.lucaargolo.structureworld.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MinecraftServerMixin"
+  ],
+  "client": [
+    "GeneratorTypeAccessor",
+    "CreateWorldScreenMixin"
+  ],
+  "server": [
+    "GeneratorOptionsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

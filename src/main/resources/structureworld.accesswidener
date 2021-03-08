@@ -1,0 +1,4 @@
+accessWidener v1 named
+
+extendable method net/minecraft/client/world/GeneratorType <init> (Ljava/lang/String;)V
+accessible method net/minecraft/client/gui/screen/world/CreateWorldScreen <init> (Lnet/minecraft/client/gui/screen/Screen;Lnet/minecraft/resource/DataPackSettings;Lnet/minecraft/client/gui/screen/world/MoreOptionsDialog;)V
