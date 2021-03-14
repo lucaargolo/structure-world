@@ -1,7 +1,5 @@
 package io.github.lucaargolo.structureworld;
 
-import io.github.lucaargolo.structureworld.Mod;
-import io.github.lucaargolo.structureworld.StructureChunkGenerator;
 import io.github.lucaargolo.structureworld.mixin.GeneratorTypeAccessor;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.world.GeneratorType;
@@ -9,7 +7,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
-import net.minecraft.world.biome.BuiltinBiomes;
 import net.minecraft.world.biome.source.FixedBiomeSource;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;

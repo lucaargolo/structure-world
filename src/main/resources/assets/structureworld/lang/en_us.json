@@ -1,4 +1,11 @@
 {
+  "commands.structureworld.invalid_chunk_generator": "This world is not using the structure chunk generator!",
+  "commands.structureworld.island_for_uuid_already_exists": "This user already have a generated structure island!",
+  "commands.structureworld.no_island_for_uuid": "This user does not have a generated structure island!",
+  "commands.structureworld.created_island": "Created island for %s",
+  "commands.structureworld.deleted_island": "Deleted island for %s",
+  "commands.structureworld.teleported_to_island": "Teleported to %s's island",
+
   "generator.simple_tree": "Simple Tree",
   "generator.classic_skyblock": "Classic Skyblock"
 }

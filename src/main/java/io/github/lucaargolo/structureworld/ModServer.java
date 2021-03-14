@@ -1,9 +1,6 @@
 package io.github.lucaargolo.structureworld;
 
-import io.github.lucaargolo.structureworld.mixin.GeneratorOptionsMixin;
-import io.github.lucaargolo.structureworld.mixin.GeneratorTypeAccessor;
 import net.fabricmc.api.DedicatedServerModInitializer;
-import net.minecraft.client.world.GeneratorType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;

@@ -53,10 +53,26 @@ public class ModConfig {
         }
     }
 
+    private final int createPlatformPermissionLevel = 0;
+    private final int teleportToPlatformPermissionLevel = 0;
+    private final int platformDistanceRadius = 1000;
+
     private final List<StructureWorldConfig> structureWorldConfigs = Arrays.asList(
             new StructureWorldConfig("structureworld:simple_tree", new PosConfig(-2, 0, -2), new PosConfig(0, 8, 0)),
             new StructureWorldConfig("structureworld:classic_skyblock", new PosConfig(-3, 0, -1), new PosConfig(0, 3, 0))
     );
+
+    public int getCreatePlatformPermissionLevel() {
+        return createPlatformPermissionLevel;
+    }
+
+    public int getTeleportToPlatformPermissionLevel() {
+        return teleportToPlatformPermissionLevel;
+    }
+
+    public int getPlatformDistanceRadius() {
+        return platformDistanceRadius;
+    }
 
     public List<StructureWorldConfig> getStructureWorldConfigs() {
         return structureWorldConfigs;
