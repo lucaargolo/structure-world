@@ -5,8 +5,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.world.GeneratorType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.source.FixedBiomeSource;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
@@ -20,9 +20,10 @@ public class ModClient implements ClientModInitializer {
 
         Mod.CONFIG.getStructureWorldConfigs().forEach(structureWorldConfig -> {
             Identifier structureIdentifier = new Identifier(structureWorldConfig.getStructureIdentifier());
+            RegistryKey<Biome> biomeKey = RegistryKey.of(Registry.BIOME_KEY, new Identifier(structureWorldConfig.getBiomeIdentifier()));
             GeneratorType generatorType = new GeneratorType(structureIdentifier.getPath()) {
                 protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-                    return new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(BiomeKeys.FOREST)), structureIdentifier, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
+                    return new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structureIdentifier, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
                 }
             };
 

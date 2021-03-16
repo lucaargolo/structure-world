@@ -7,7 +7,14 @@
   "authors": [
     "D4rkness_King"
   ],
-  "contact": {},
+  "contributors": [
+    "AlexSa1000"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/structure-world",
+    "sources": "https://github.com/lucaargolo/structure-world",
+    "issues": "https://github.com/lucaargolo/structure-world/issues"
+  },
   "license": "MPL-2.0",
   "icon": "assets/structureworld/icon.png",
   "environment": "*",

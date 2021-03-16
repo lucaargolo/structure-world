@@ -1,20 +1,22 @@
 package io.github.lucaargolo.structureworld;
 
+import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
+import net.minecraft.structure.StructureManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+
+import java.util.Optional;
 
 public class StructureChunkGenerator extends ChunkGenerator {
 
@@ -77,5 +79,16 @@ public class StructureChunkGenerator extends ChunkGenerator {
     public BlockView getColumnSample(int x, int z) {
         return new VerticalBlockSample(new BlockState[0]);
     }
+
+    @Override
+    public StructuresConfig getStructuresConfig() {
+        return new StructuresConfig(Optional.empty(), Maps.newHashMap());
+    }
+
+    @Override
+    public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk, StructureManager structureManager, long worldSeed) { }
+
+    @Override
+    public void addStructureReferences(StructureWorldAccess world, StructureAccessor accessor, Chunk chunk) { }
 
 }

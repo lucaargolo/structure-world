@@ -4,9 +4,9 @@ import net.fabricmc.api.DedicatedServerModInitializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.source.FixedBiomeSource;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
@@ -40,6 +40,7 @@ public class ModServer implements DedicatedServerModInitializer {
         if(levelType != null && levelType.startsWith("structure_")) {
             Mod.CONFIG.getStructureWorldConfigs().forEach(structureWorldConfig -> {
                 Identifier structureIdentifier = new Identifier(structureWorldConfig.getStructureIdentifier());
+                RegistryKey<Biome> biomeKey = RegistryKey.of(Registry.BIOME_KEY, new Identifier(structureWorldConfig.getBiomeIdentifier()));
 
                 if(levelType.equals("structure_"+structureIdentifier.getPath())) {
                     Registry<DimensionType> dimensionTypeRegistry = dynamicRegistryManager.get(Registry.DIMENSION_TYPE_KEY);
@@ -47,7 +48,7 @@ public class ModServer implements DedicatedServerModInitializer {
                     Registry<ChunkGeneratorSettings> noiseSettingsRegistry = dynamicRegistryManager.get(Registry.NOISE_SETTINGS_WORLDGEN);
                     SimpleRegistry<DimensionOptions> simpleRegistry = DimensionType.createDefaultDimensionOptions(dimensionTypeRegistry, biomeRegistry, noiseSettingsRegistry, 0L);
 
-                    StructureChunkGenerator structureChunkGenerator = new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(BiomeKeys.FOREST)), structureIdentifier, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
+                    StructureChunkGenerator structureChunkGenerator = new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structureIdentifier, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
                     SimpleRegistry<DimensionOptions> finalRegistry = GeneratorOptions.method_28608(dimensionTypeRegistry, simpleRegistry, structureChunkGenerator);
                     info.setReturnValue(new GeneratorOptions(0L, false, false, finalRegistry));
                 }
