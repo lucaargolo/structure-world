@@ -44,8 +44,8 @@ public class Mod implements ModInitializer {
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier(MOD_ID, "structure_chunk_generator"), StructureChunkGenerator.CODEC);
 
         Path configPath = FabricLoader.getInstance().getConfigDir();
-        File structuresFolder = new File(configPath + File.separator + "structures");
-        File configFile = new File(configPath + File.separator + "structureworld.json");
+        File structuresFolder = new File(configPath + File.separator + "structureworld" + File.separator + "structures");
+        File configFile = new File(configPath + File.separator + "structureworld" + File.separator + "structureworld.json");
 
         LOGGER.info("Trying to read structures folder...");
         try {
