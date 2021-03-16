@@ -27,7 +27,7 @@ public class StructureChunkGenerator extends ChunkGenerator {
     public static final Codec<StructureChunkGenerator> CODEC = RecordCodecBuilder.create((instance) ->
             instance.group(
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter((generator) -> generator.biomeSource),
-                    Codec.STRING.fieldOf("structure").forGetter((generator) -> generator.structure),
+                    Codec.STRING.stable().fieldOf("structure").forGetter((generator) -> generator.structure),
                     BlockPos.CODEC.fieldOf("structureOffset").forGetter((generator) -> generator.structureOffset),
                     BlockPos.CODEC.fieldOf("playerSpawnOffset").forGetter((generator) -> generator.playerSpawnOffset)
             ).apply(instance, instance.stable(StructureChunkGenerator::new))
