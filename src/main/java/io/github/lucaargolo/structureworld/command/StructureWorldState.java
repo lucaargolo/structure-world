@@ -1,14 +1,11 @@
 package io.github.lucaargolo.structureworld.command;
 
 import io.github.lucaargolo.structureworld.Mod;
-import io.github.lucaargolo.structureworld.StructureCache;
 import io.github.lucaargolo.structureworld.StructureChunkGenerator;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
-import net.minecraft.structure.StructureManager;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.PersistentState;
@@ -46,10 +43,8 @@ public class StructureWorldState extends PersistentState {
         if (!playerMap.containsKey(playerEntity.getUuid())) {
             ChunkGenerator chunkGenerator = world.getChunkManager().getChunkGenerator();
             if (chunkGenerator instanceof StructureChunkGenerator) {
-                MinecraftServer server = world.getServer();
-                StructureManager structureManager = server.getStructureManager();
                 StructureChunkGenerator structureChunkGenerator = (StructureChunkGenerator) chunkGenerator;
-                Structure structure = StructureCache.getOrCreateCache(structureManager, structureChunkGenerator.getStructure());
+                Structure structure = Mod.STRUCTURES.get(structureChunkGenerator.getStructure());
                 BlockPos playerSpawnOffset = structureChunkGenerator.getPlayerSpawnOffset();
                 BlockPos structureOffset = structureChunkGenerator.getStructureOffset();
 

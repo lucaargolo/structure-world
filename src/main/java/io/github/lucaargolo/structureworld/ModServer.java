@@ -39,16 +39,16 @@ public class ModServer implements DedicatedServerModInitializer {
         String levelType = properties.getProperty("level-type");
         if(levelType != null && levelType.startsWith("structure_")) {
             Mod.CONFIG.getStructureWorldConfigs().forEach(structureWorldConfig -> {
-                Identifier structureIdentifier = new Identifier(structureWorldConfig.getStructureIdentifier());
+                String structure = structureWorldConfig.getStructureIdentifier();
                 RegistryKey<Biome> biomeKey = RegistryKey.of(Registry.BIOME_KEY, new Identifier(structureWorldConfig.getBiomeIdentifier()));
 
-                if(levelType.equals("structure_"+structureIdentifier.getPath())) {
+                if(levelType.equals("structure_"+structure)) {
                     Registry<DimensionType> dimensionTypeRegistry = dynamicRegistryManager.get(Registry.DIMENSION_TYPE_KEY);
                     Registry<Biome> biomeRegistry = dynamicRegistryManager.get(Registry.BIOME_KEY);
                     Registry<ChunkGeneratorSettings> noiseSettingsRegistry = dynamicRegistryManager.get(Registry.NOISE_SETTINGS_WORLDGEN);
                     SimpleRegistry<DimensionOptions> simpleRegistry = DimensionType.createDefaultDimensionOptions(dimensionTypeRegistry, biomeRegistry, noiseSettingsRegistry, 0L);
 
-                    StructureChunkGenerator structureChunkGenerator = new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structureIdentifier, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
+                    StructureChunkGenerator structureChunkGenerator = new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structure, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
                     SimpleRegistry<DimensionOptions> finalRegistry = GeneratorOptions.method_28608(dimensionTypeRegistry, simpleRegistry, structureChunkGenerator);
                     info.setReturnValue(new GeneratorOptions(0L, false, false, finalRegistry));
                 }

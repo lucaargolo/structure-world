@@ -24,10 +24,8 @@ public class StructurePlatformFeature extends Feature<DefaultFeatureConfig> {
             return false;
         }
 
-        MinecraftServer server = structureWorldAccess.toServerWorld().getServer();
-        StructureManager structureManager = server.getStructureManager();
         StructureChunkGenerator structureChunkGenerator = (StructureChunkGenerator) chunkGenerator;
-        Structure structure = StructureCache.getOrCreateCache(structureManager, structureChunkGenerator.getStructure());
+        Structure structure = Mod.STRUCTURES.get(structureChunkGenerator.getStructure());
         BlockPos structureOffset = structureChunkGenerator.getStructureOffset();
 
         BlockPos offsetedPos = blockPos.add(structureOffset);

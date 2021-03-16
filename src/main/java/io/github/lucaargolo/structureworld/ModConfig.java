@@ -42,13 +42,13 @@ public class ModConfig {
         }
     }
 
-    private final int createPlatformPermissionLevel = 0;
-    private final int teleportToPlatformPermissionLevel = 0;
-    private final int platformDistanceRadius = 1000;
+    private int createPlatformPermissionLevel = 0;
+    private int teleportToPlatformPermissionLevel = 0;
+    private int platformDistanceRadius = 1000;
 
     private final List<StructureWorldConfig> structureWorldConfigs = Arrays.asList(
-            new StructureWorldConfig("structureworld:simple_tree", "minecraft:forest", new int[]{-2, 0, -2}, new int[]{0, 8, 0}),
-            new StructureWorldConfig("structureworld:classic_skyblock", "minecraft:plains", new int[]{-3, 0, -1}, new int[]{0, 3, 0})
+            new StructureWorldConfig("simple_tree", "minecraft:forest", new int[]{-2, 0, -2}, new int[]{0, 8, 0}),
+            new StructureWorldConfig("classic_skyblock", "minecraft:plains", new int[]{-3, 0, -1}, new int[]{0, 3, 0})
     );
 
     public int getCreatePlatformPermissionLevel() {

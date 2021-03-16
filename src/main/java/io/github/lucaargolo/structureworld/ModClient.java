@@ -19,21 +19,21 @@ public class ModClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         Mod.CONFIG.getStructureWorldConfigs().forEach(structureWorldConfig -> {
-            Identifier structureIdentifier = new Identifier(structureWorldConfig.getStructureIdentifier());
+            String structure = structureWorldConfig.getStructureIdentifier();
             RegistryKey<Biome> biomeKey = RegistryKey.of(Registry.BIOME_KEY, new Identifier(structureWorldConfig.getBiomeIdentifier()));
-            GeneratorType generatorType = new GeneratorType(structureIdentifier.getPath()) {
+            GeneratorType generatorType = new GeneratorType(structure) {
                 protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-                    return new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structureIdentifier, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
+                    return new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structure, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
                 }
             };
 
             if(structureWorldConfig.isOverridingDefault()) {
                 GeneratorTypeAccessor.getValues().add(0, generatorType);
                 OVERRIDED_GENERATOR_TYPE = generatorType;
-                Mod.LOGGER.info("Successfully registered "+structureIdentifier+" generator type. (Overriding default)");
+                Mod.LOGGER.info("Successfully registered "+structure+" generator type. (Overriding default)");
             }else{
                 GeneratorTypeAccessor.getValues().add(generatorType);
-                Mod.LOGGER.info("Successfully registered "+structureIdentifier+" generator type.");
+                Mod.LOGGER.info("Successfully registered "+structure+" generator type.");
             }
 
         });

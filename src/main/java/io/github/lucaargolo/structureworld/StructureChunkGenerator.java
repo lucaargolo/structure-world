@@ -20,27 +20,27 @@ import java.util.Optional;
 
 public class StructureChunkGenerator extends ChunkGenerator {
 
-    private final Identifier structure;
+    private final String structure;
     private final BlockPos structureOffset;
     private final BlockPos playerSpawnOffset;
 
     public static final Codec<StructureChunkGenerator> CODEC = RecordCodecBuilder.create((instance) ->
             instance.group(
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter((generator) -> generator.biomeSource),
-                    Identifier.CODEC.fieldOf("structure").forGetter((generator) -> generator.structure),
+                    Codec.STRING.fieldOf("structure").forGetter((generator) -> generator.structure),
                     BlockPos.CODEC.fieldOf("structureOffset").forGetter((generator) -> generator.structureOffset),
                     BlockPos.CODEC.fieldOf("playerSpawnOffset").forGetter((generator) -> generator.playerSpawnOffset)
             ).apply(instance, instance.stable(StructureChunkGenerator::new))
     );
 
-    public StructureChunkGenerator(BiomeSource biomeSource, Identifier structure, BlockPos structureOffset, BlockPos playerSpawnOffset) {
+    public StructureChunkGenerator(BiomeSource biomeSource, String structure, BlockPos structureOffset, BlockPos playerSpawnOffset) {
         super(biomeSource, new StructuresConfig(false));
         this.structure = structure;
         this.structureOffset = structureOffset;
         this.playerSpawnOffset = playerSpawnOffset;
     }
 
-    public Identifier getStructure() {
+    public String getStructure() {
         return structure;
     }
 
@@ -85,10 +85,5 @@ public class StructureChunkGenerator extends ChunkGenerator {
         return new StructuresConfig(Optional.empty(), Maps.newHashMap());
     }
 
-    @Override
-    public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk, StructureManager structureManager, long worldSeed) { }
-
-    @Override
-    public void addStructureReferences(StructureWorldAccess world, StructureAccessor accessor, Chunk chunk) { }
 
 }
