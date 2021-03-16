@@ -4,7 +4,8 @@
   "package": "io.github.lucaargolo.structureworld.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "MinecraftServerMixin"
+    "MinecraftServerMixin",
+    "BiomeMixin"
   ],
   "client": [
     "GeneratorTypeAccessor",

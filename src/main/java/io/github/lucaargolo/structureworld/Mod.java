@@ -13,11 +13,15 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.structure.Structure;
+import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
@@ -31,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Mod implements ModInitializer {
@@ -40,18 +45,12 @@ public class Mod implements ModInitializer {
     public static final HashMap<String, Structure> STRUCTURES = Maps.newHashMap();
     public static ModConfig CONFIG;
 
-    public static RegistryKey<ConfiguredFeature<?, ?>> CONFIGURED_STRUCTURE_PLATFORM_KEY = RegistryKey.of(Registry.CONFIGURED_FEATURE_WORLDGEN, new Identifier(MOD_ID, "structure_platform_feature"));
-
     private static final JsonParser parser = new JsonParser();
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onInitialize() {
-        Feature<DefaultFeatureConfig> rawFeature = Registry.register(Registry.FEATURE, new Identifier(MOD_ID, "structure_feature"), new StructurePlatformFeature(DefaultFeatureConfig.CODEC));
-        Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, CONFIGURED_STRUCTURE_PLATFORM_KEY.getValue(), rawFeature.configure(FeatureConfig.DEFAULT));
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier(MOD_ID, "structure_chunk_generator"), StructureChunkGenerator.CODEC);
-        BiomeModifications.addFeature(BiomeSelectors.all(), GenerationStep.Feature.TOP_LAYER_MODIFICATION, CONFIGURED_STRUCTURE_PLATFORM_KEY);
 
         Path configPath = FabricLoader.getInstance().getConfigDir();
         File structuresFolder = new File(configPath + File.separator + "structures");
@@ -121,6 +120,22 @@ public class Mod implements ModInitializer {
 
         CommandRegistrationCallback.EVENT.register(((dispatcher, dedicated) -> StructureWorldCommand.register(dispatcher)));
 
+    }
+
+    public static void generateStructureFeature(StructureWorldAccess structureWorldAccess, ChunkGenerator chunkGenerator, Random random, BlockPos blockPos) {
+        if(!blockPos.isWithinDistance(BlockPos.ORIGIN, 2) || !(chunkGenerator instanceof StructureChunkGenerator)) {
+            return;
+        }
+
+        StructureChunkGenerator structureChunkGenerator = (StructureChunkGenerator) chunkGenerator;
+        Structure structure = Mod.STRUCTURES.get(structureChunkGenerator.getStructure());
+        BlockPos structureOffset = structureChunkGenerator.getStructureOffset();
+
+        BlockPos offsetedPos = blockPos.add(structureOffset);
+
+        if(structure != null) {
+            structure.place(structureWorldAccess, offsetedPos.add(8, 64, 8), new StructurePlacementData(), random);
+        }
     }
 
 
