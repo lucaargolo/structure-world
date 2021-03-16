@@ -36,8 +36,13 @@ public class ModServer implements DedicatedServerModInitializer {
     }
 
     public static void fromPropertiesHook(DynamicRegistryManager dynamicRegistryManager, Properties properties, CallbackInfoReturnable<GeneratorOptions> info) {
-        String levelType = properties.getProperty("level-type");
-        if(levelType != null && levelType.startsWith("structure_")) {
+        String levelType;
+        if(properties.getProperty("level-type") == null && OVERRIDED_LEVEL_TYPE != null) {
+            levelType = OVERRIDED_LEVEL_TYPE;
+        }else{
+            levelType = properties.getProperty("level-type");
+        }
+        if(levelType.startsWith("structure_")) {
             Mod.CONFIG.getStructureWorldConfigs().forEach(structureWorldConfig -> {
                 String structure = structureWorldConfig.getStructureIdentifier();
                 RegistryKey<Biome> biomeKey = RegistryKey.of(Registry.BIOME_KEY, new Identifier(structureWorldConfig.getBiomeIdentifier()));
