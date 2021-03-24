@@ -85,15 +85,10 @@ public class StructureChunkGenerator extends ChunkGenerator {
     public void buildSurface(ChunkRegion region, Chunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
         if(!fillmentBlock.isAir()) {
-            int startX = Math.min(chunkPos.getStartX(), chunkPos.getEndX());
-            int startZ = Math.min(chunkPos.getStartZ(), chunkPos.getEndZ());
-            for (int x = startX; x < startX + 16; x++) {
-                for (int y = 0; y < getWorldHeight(); y++) {
-                    for (int z = startZ; z < startZ + 16; z++) {
-                        chunk.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), false);
-                    }
-                }
-            }
+            int startX = chunk.getPos().getStartX();
+            int startZ = chunk.getPos().getStartZ();
+
+            BlockPos.iterate(startX, 0, startZ, startX + 15, getWorldHeight(), startZ + 15).forEach( blockPos -> chunk.setBlockState(blockPos, Blocks.STONE.getDefaultState(), false));
         }
         if(enableTopBedrock || enableBottomBedrock) {
             ChunkRandom chunkRandom = new ChunkRandom();
