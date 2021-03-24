@@ -2,6 +2,7 @@ package io.github.lucaargolo.structureworld;
 
 import io.github.lucaargolo.structureworld.mixin.GeneratorTypeAccessor;
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.world.GeneratorType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -23,7 +24,8 @@ public class ModClient implements ClientModInitializer {
             RegistryKey<Biome> biomeKey = RegistryKey.of(Registry.BIOME_KEY, new Identifier(structureWorldConfig.getBiomeIdentifier()));
             GeneratorType generatorType = new GeneratorType(structure) {
                 protected ChunkGenerator getChunkGenerator(Registry<Biome> biomeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, long seed) {
-                    return new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structure, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
+                    BlockState fillmentBlockState = Registry.BLOCK.get(new Identifier(structureWorldConfig.getFillmentBlockIdentifier())).getDefaultState();
+                    return new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structure, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset(), fillmentBlockState, structureWorldConfig.isTopBedrockEnabled(), structureWorldConfig.isBottomBedrockEnabled(), structureWorldConfig.isBedrockFlat());
                 }
             };
 

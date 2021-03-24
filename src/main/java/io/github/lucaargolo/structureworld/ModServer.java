@@ -1,6 +1,7 @@
 package io.github.lucaargolo.structureworld;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
@@ -53,7 +54,8 @@ public class ModServer implements DedicatedServerModInitializer {
                     Registry<ChunkGeneratorSettings> noiseSettingsRegistry = dynamicRegistryManager.get(Registry.NOISE_SETTINGS_WORLDGEN);
                     SimpleRegistry<DimensionOptions> simpleRegistry = DimensionType.createDefaultDimensionOptions(dimensionTypeRegistry, biomeRegistry, noiseSettingsRegistry, 0L);
 
-                    StructureChunkGenerator structureChunkGenerator = new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structure, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset());
+                    BlockState fillmentBlockState = Registry.BLOCK.get(new Identifier(structureWorldConfig.getFillmentBlockIdentifier())).getDefaultState();
+                    StructureChunkGenerator structureChunkGenerator = new StructureChunkGenerator(new FixedBiomeSource(biomeRegistry.getOrThrow(biomeKey)), structure, structureWorldConfig.getStructureOffset(), structureWorldConfig.getPlayerSpawnOffset(), fillmentBlockState, structureWorldConfig.isTopBedrockEnabled(), structureWorldConfig.isBottomBedrockEnabled(), structureWorldConfig.isBedrockFlat());
                     SimpleRegistry<DimensionOptions> finalRegistry = GeneratorOptions.method_28608(dimensionTypeRegistry, simpleRegistry, structureChunkGenerator);
                     info.setReturnValue(new GeneratorOptions(0L, false, false, finalRegistry));
                 }

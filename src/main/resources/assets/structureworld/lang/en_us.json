@@ -7,5 +7,6 @@
   "commands.structureworld.teleported_to_island": "Teleported to %s's island",
 
   "generator.simple_tree": "Simple Tree",
-  "generator.classic_skyblock": "Classic Skyblock"
+  "generator.classic_skyblock": "Classic Skyblock",
+  "generator.stoneblock": "Stoneblock"
 }
