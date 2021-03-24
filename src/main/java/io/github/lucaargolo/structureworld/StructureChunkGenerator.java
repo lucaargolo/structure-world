@@ -2,6 +2,7 @@ package io.github.lucaargolo.structureworld;
 
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.Lifecycle;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -41,10 +42,10 @@ public class StructureChunkGenerator extends ChunkGenerator {
                     Codec.STRING.stable().fieldOf("structure").forGetter((generator) -> generator.structure),
                     BlockPos.CODEC.fieldOf("structureOffset").forGetter((generator) -> generator.structureOffset),
                     BlockPos.CODEC.fieldOf("playerSpawnOffset").forGetter((generator) -> generator.playerSpawnOffset),
-                    BlockState.CODEC.optionalFieldOf("fillmentBlock", Blocks.AIR.getDefaultState()).forGetter((generator) -> generator.fillmentBlock),
-                    Codec.BOOL.stable().optionalFieldOf("enableTopBedrock", false).forGetter((generator) -> generator.enableTopBedrock),
-                    Codec.BOOL.stable().optionalFieldOf("enableBottomBedrock", false).forGetter((generator) -> generator.enableBottomBedrock),
-                    Codec.BOOL.stable().optionalFieldOf("isBedrockFlat", false).forGetter((generator) -> generator.isBedrockFlat)
+                    BlockState.CODEC.optionalFieldOf("fillmentBlock", Blocks.AIR.getDefaultState()).stable().forGetter((generator) -> generator.fillmentBlock),
+                    Codec.BOOL.optionalFieldOf("enableTopBedrock", false).stable().forGetter((generator) -> generator.enableTopBedrock),
+                    Codec.BOOL.optionalFieldOf("enableBottomBedrock", false).stable().forGetter((generator) -> generator.enableBottomBedrock),
+                    Codec.BOOL.optionalFieldOf("isBedrockFlat", false).stable().forGetter((generator) -> generator.isBedrockFlat)
             ).apply(instance, instance.stable(StructureChunkGenerator::new))
     );
 
