@@ -89,7 +89,7 @@ public class StructureChunkGenerator extends ChunkGenerator {
             int startX = chunk.getPos().getStartX();
             int startZ = chunk.getPos().getStartZ();
 
-            BlockPos.iterate(startX, 0, startZ, startX + 15, getWorldHeight(), startZ + 15).forEach( blockPos -> chunk.setBlockState(blockPos, Blocks.STONE.getDefaultState(), false));
+            BlockPos.iterate(startX, 0, startZ, startX + 15, getWorldHeight(), startZ + 15).forEach( blockPos -> chunk.setBlockState(blockPos, fillmentBlock, false));
         }
         if(enableTopBedrock || enableBottomBedrock) {
             ChunkRandom chunkRandom = new ChunkRandom();
