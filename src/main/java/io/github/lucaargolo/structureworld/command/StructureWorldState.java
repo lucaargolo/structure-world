@@ -2,7 +2,8 @@ package io.github.lucaargolo.structureworld.command;
 
 import io.github.lucaargolo.structureworld.Mod;
 import io.github.lucaargolo.structureworld.StructureChunkGenerator;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.Structure;
@@ -19,8 +20,7 @@ public class StructureWorldState extends PersistentState {
     private final HashMap<UUID, BlockPos> playerMap = new HashMap<>();
     private int x, y, dx, dy;
 
-    public StructureWorldState(String key) {
-        super(key);
+    public StructureWorldState() {
         this.x = Mod.CONFIG.getPlatformDistanceRadius();
         this.y = 0;
         this.dx = Mod.CONFIG.getPlatformDistanceRadius();
@@ -59,7 +59,7 @@ public class StructureWorldState extends PersistentState {
                 this.y = y+this.dy;
 
                 if (structure != null) {
-                    structure.place(world, island.add(structureOffset), new StructurePlacementData(), world.random);
+                    structure.place(world, island.add(structureOffset), island.add(structureOffset), new StructurePlacementData(), world.random, Block.NO_REDRAW);
                 }
                 playerMap.put(playerEntity.getUuid(), island.add(playerSpawnOffset));
             } else {
@@ -71,25 +71,8 @@ public class StructureWorldState extends PersistentState {
     }
 
     @Override
-    public void fromTag(CompoundTag tag) {
-        playerMap.clear();
-        CompoundTag playerMapTag = tag.getCompound("playerMap");
-        playerMapTag.getKeys().forEach( key -> {
-            try {
-                UUID uuid = UUID.fromString(key);
-                BlockPos pos = BlockPos.fromLong(playerMapTag.getLong(key));
-                playerMap.put(uuid, pos);
-            }catch (IllegalArgumentException ignored) {}
-        });
-        this.x = tag.getInt("x");
-        this.y = tag.getInt("y");
-        this.dx = tag.getInt("dx");
-        this.dy = tag.getInt("dy");
-    }
-
-    @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        CompoundTag playerMapTag = new CompoundTag();
+    public NbtCompound writeNbt(NbtCompound tag) {
+        NbtCompound playerMapTag = new NbtCompound();
         playerMap.forEach( (uuid, blockPos) -> playerMapTag.putLong(uuid.toString(), blockPos.asLong()));
         tag.put("playerMap", playerMapTag);
         tag.putInt("x", x);
@@ -98,4 +81,23 @@ public class StructureWorldState extends PersistentState {
         tag.putInt("dy", dy);
         return tag;
     }
+
+    public static StructureWorldState createFromNbt(NbtCompound tag) {
+        StructureWorldState state = new StructureWorldState();
+        state.playerMap.clear();
+        NbtCompound playerMapTag = tag.getCompound("playerMap");
+        playerMapTag.getKeys().forEach( key -> {
+            try {
+                UUID uuid = UUID.fromString(key);
+                BlockPos pos = BlockPos.fromLong(playerMapTag.getLong(key));
+                state.playerMap.put(uuid, pos);
+            }catch (IllegalArgumentException ignored) {}
+        });
+        state.x = tag.getInt("x");
+        state.y = tag.getInt("y");
+        state.dx = tag.getInt("dx");
+        state.dy = tag.getInt("dy");
+        return state;
+    }
+
 }

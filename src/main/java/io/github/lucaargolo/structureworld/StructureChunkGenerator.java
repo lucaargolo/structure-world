@@ -8,10 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.*;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
@@ -24,6 +21,8 @@ import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class StructureChunkGenerator extends ChunkGenerator {
 
@@ -138,22 +137,23 @@ public class StructureChunkGenerator extends ChunkGenerator {
     }
 
     @Override
-    public void populateNoise(WorldAccess world, StructureAccessor accessor, Chunk chunk) {
-    }
-
-    @Override
-    public int getHeight(int x, int z, Heightmap.Type heightmapType) {
+    public int getHeight(int x, int z, Heightmap.Type heightmapType, HeightLimitView world) {
         return 0;
     }
 
     @Override
-    public BlockView getColumnSample(int x, int z) {
-        return new VerticalBlockSample(new BlockState[0]);
+    public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView world) {
+        return new VerticalBlockSample(0, new BlockState[0]);
     }
 
     @Override
     public StructuresConfig getStructuresConfig() {
         return new StructuresConfig(Optional.empty(), Maps.newHashMap());
+    }
+
+    @Override
+    public CompletableFuture<Chunk> populateNoise(Executor executor, StructureAccessor accessor, Chunk chunk) {
+        return CompletableFuture.completedFuture(chunk);
     }
 
     @Override

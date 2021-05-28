@@ -15,10 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MinecraftServerMixin {
 
     @Inject(at = @At("TAIL"), method = "setupSpawn")
-    private static void setupSpawn(ServerWorld world, ServerWorldProperties serverWorldProperties, boolean bonusChest, boolean debugWorld, boolean bl, CallbackInfo info) {
+    private static void setupSpawn(ServerWorld world, ServerWorldProperties worldProperties, boolean bonusChest, boolean debugWorld, CallbackInfo ci) {
         ChunkGenerator chunkGenerator = world.getChunkManager().getChunkGenerator();
-        if(chunkGenerator instanceof StructureChunkGenerator) {
-            StructureChunkGenerator structureChunkGenerator = (StructureChunkGenerator) chunkGenerator;
+        if(chunkGenerator instanceof StructureChunkGenerator structureChunkGenerator) {
             BlockPos offsetedSpawnPos = new BlockPos(8, 64, 8).add(structureChunkGenerator.getPlayerSpawnOffset());
             world.setSpawnPos(offsetedSpawnPos, world.getSpawnAngle());
         }

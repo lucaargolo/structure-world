@@ -8,7 +8,8 @@ import io.github.lucaargolo.structureworld.command.StructureWorldCommand;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.structure.Structure;
 import net.minecraft.structure.StructurePlacementData;
@@ -73,9 +74,9 @@ public class Mod implements ModInitializer {
                 for (File file : files) {
                     FileInputStream fileInputStream = new FileInputStream(file);
                     DataInputStream dataInputStream = new DataInputStream(fileInputStream);
-                    CompoundTag structure = NbtIo.readCompressed(dataInputStream);
+                    NbtCompound structure = NbtIo.readCompressed(dataInputStream);
                     Structure loadedStructure = new Structure();
-                    loadedStructure.fromTag(structure);
+                    loadedStructure.readNbt(structure);
                     STRUCTURES.put(file.getName().replace(".nbt", ""), loadedStructure);
                 }
                 LOGGER.info("Successfully loaded structures folder with " + STRUCTURES.size() + " structure.");
@@ -125,7 +126,7 @@ public class Mod implements ModInitializer {
         BlockPos offsetedPos = blockPos.add(structureOffset);
 
         if(structure != null) {
-            structure.place(structureWorldAccess, offsetedPos.add(8, 64, 8), new StructurePlacementData(), random);
+            structure.place(structureWorldAccess, offsetedPos.add(8, 64, 8), offsetedPos.add(8, 64, 8), new StructurePlacementData(), random, Block.NO_REDRAW);
         }
     }
 
